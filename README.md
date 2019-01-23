@@ -1,4 +1,10 @@
-## ProxyMan [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/proxyman-linux/Lobby)
+## ProxyMan
+
+
+### It's a fork
+
+Major use: collab work on the original https://github.com/himanshub16/ProxyMan
+Minor use: customizing for special and selfish usage
 
 ### Configuring proxy made so simple on Linux ([releases](https://github.com/himanshub16/ProxyMan/releases/))
 
