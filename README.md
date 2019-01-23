@@ -3,7 +3,7 @@
 ### Configuring proxy made so simple on Linux ([releases](https://github.com/himanshub16/ProxyMan/releases/))
 
 
-v3 is ready with new features, necessary improvements, updates, restructured code and much better experience. :tada: 
+v3 is ready with new features, necessary improvements, updates, restructured code and much better experience. :tada:
 
 ## How to use it
 [![asciicast](https://asciinema.org/a/CVha4PPMdjkU7a1XihD9PItrz.png)](https://asciinema.org/a/CVha4PPMdjkU7a1XihD9PItrz)
@@ -11,7 +11,7 @@ v3 is ready with new features, necessary improvements, updates, restructured cod
 * Download and install with single-step process.
 ```./install```
 
-Proxyman is now available in your path. 
+Proxyman is now available in your path.  
 Open a new terminal window and start playing.
 
 * Set proxy
@@ -20,7 +20,7 @@ Open a new terminal window and start playing.
 * Save your settings for later use.
 * View your saved configs
 ```proxyman configs```
-* Load your previously saved config - say you saved it by the name *point4*. 
+* Load your previously saved config - say you saved it by the name *point4*.
 ```proxyman load point4```
 
 ## What's new?
