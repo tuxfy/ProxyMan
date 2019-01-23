@@ -16,6 +16,7 @@ list_proxy() {
          "$(gsettings get org.gnome.system.proxy.http host) "\
          "$(gsettings get org.gnome.system.proxy.http port)"
     echo "${bold} Auth ${normal}  "\
+         "$(gsettings get org.gnome.system.proxy.http use-authentication) "\
          "$(gsettings get org.gnome.system.proxy.http authentication-user) "\
          "$(gsettings get org.gnome.system.proxy.http authentication-password)"
     echo "${bold} https ${normal} "\
@@ -27,10 +28,6 @@ list_proxy() {
     echo "${bold} socks ${normal} "\
          "$(gsettings get org.gnome.system.proxy.socks host) "\
          "$(gsettings get org.gnome.system.proxy.socks port)"
-    echo "${bold} auth ${normal} "\
-         "$(gsettings get org.gnome.system.proxy.http use-authentication) "\
-         "$(gsettings get org.gnome.system.proxy.http authentication-user) "\
-         "$(gsettings get org.gnome.system.proxy.http authentication-password)"
     echo "${bold} no_proxy ${normal} "\
          "$(gsettings get org.gnome.system.proxy ignore-hosts) "
 }
@@ -48,15 +45,13 @@ set_proxy() {
     gsettings set org.gnome.system.proxy.https port "$https_port"
     gsettings set org.gnome.system.proxy.ftp host "$ftp_host"
     gsettings set org.gnome.system.proxy.ftp port "$ftp_port"
+    gsettings set org.gnome.system.proxy.http authentication-password "$password"
+    gsettings set org.gnome.system.proxy.http authentication-user "$username"
 
     if [ "$use_auth" = "y" ]; then
         gsettings set org.gnome.system.proxy.http use-authentication true
-        gsettings set org.gnome.system.proxy.http authentication-password "$password"
-        gsettings set org.gnome.system.proxy.http authentication-user "$username"
     else
         gsettings set org.gnome.system.proxy.http use-authentication false
-        gsettings set org.gnome.system.proxy.http authentication-password ''
-        gsettings set org.gnome.system.proxy.http authentication-user ''
     fi
 
     if [[ $no_proxy =~ .*,.* ]]; then
