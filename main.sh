@@ -19,17 +19,18 @@ function _do_it_for_all() {
     local what_to_do="$1"
     if [[ -z "$targets" || "$targets" = "1" ]]; then
         bash "bash-zsh.sh" "$what_to_do"
-        sudo -E bash "environment.sh" "$what_to_do"
+        # sudo -E bash "environment.sh" "$what_to_do"
         bash "gsettings.sh" "$what_to_do"
         bash "npm.sh" "$what_to_do"
         bash "dropbox.sh" "$what_to_do"
         bash "git.sh" "$what_to_do"
 
         # isn't required, but still checked to avoid sudo in main all the time
-        if [[ $(which apt &> /dev/null) || $(which dnf &> /dev/null) || $(which docker &> /dev/null) ]]; then
+        if [[ $(which apt &> /dev/null) || $(which dnf &> /dev/null) || $(which docker &> /dev/null) || $(which snap &> /dev/null) ]]; then
             sudo -E bash "apt.sh" "$what_to_do"
             sudo -E bash "dnf.sh" "$what_to_do"
             sudo -E bash "docker.sh" "$what_to_do"
+            sudo -E bash "snap.sh" "$what_to_do"
         fi
     else
         for t in "${targets[@]}"
@@ -44,6 +45,7 @@ function _do_it_for_all() {
                 3) sudo -E bash "environment.sh" "$what_to_do"
                    ;;
                 4) sudo -E bash "apt.sh" "$what_to_do"
+                   sudo -E bash "snap.sh" "$what_to_do"
                    sudo -E bash "dnf.sh" "$what_to_do"
                    ;;
                 5) bash "gsettings.sh" "$what_to_do"
@@ -141,7 +143,7 @@ function prompt_for_proxy_targets() {
     echo "|${bold}${red} 1 ${normal}| All of them ... Don't bother me"
     echo "|${bold}${red} 2 ${normal}| Terminal / bash / zsh (current user) "
     echo "|${bold}${red} 3 ${normal}| /etc/environment"
-    echo "|${bold}${red} 4 ${normal}| apt/dnf (Package manager)"
+    echo "|${bold}${red} 4 ${normal}| apt+snap/dnf (Package manager)"
     echo "|${bold}${red} 5 ${normal}| Desktop settings (GNOME/Ubuntu)"
     echo "|${bold}${red} 6 ${normal}| npm & yarn"
     echo "|${bold}${red} 7 ${normal}| Dropbox"
