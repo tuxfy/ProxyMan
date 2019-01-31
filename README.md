@@ -5,6 +5,8 @@
 Major use: collab work on the original https://github.com/himanshub16/ProxyMan
 Minor use: customizing for special and selfish usage
 
+### How to use
+
 * Download and install with single-step process.
 ```./install```
 
