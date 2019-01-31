@@ -8,8 +8,12 @@
 # This is the main script which calls other respective scripts.
 # In case of doubts regarding how to use, refer the README.md file.
 
-source "./variables.sh"
-source "./configs.sh"
+
+export CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/"
+export SCRIPT_DIR="${CURRENT_DIR}dists/"
+
+source "${CURRENT_DIR}variables.sh"
+source "${CURRENT_DIR}configs.sh"
 
 
 function _do_it_for_all() {
@@ -18,17 +22,17 @@ function _do_it_for_all() {
 
     local what_to_do="$1"
     if [[ -z "$targets" || "$targets" = "1" ]]; then
-        bash "bash-zsh.sh" "$what_to_do"
+        bash "${SCRIPT_DIR}bash-zsh.sh" "$what_to_do"
         # sudo -E bash "environment.sh" "$what_to_do"
-        bash "gsettings.sh" "$what_to_do"
-        bash "npm.sh" "$what_to_do"
-        bash "dropbox.sh" "$what_to_do"
-        bash "git.sh" "$what_to_do"
+        bash "${SCRIPT_DIR}gsettings.sh" "$what_to_do"
+        bash "${SCRIPT_DIR}npm.sh" "$what_to_do"
+        bash "${SCRIPT_DIR}dropbox.sh" "$what_to_do"
+        bash "${SCRIPT_DIR}git.sh" "$what_to_do"
 
         # isn't required, but still checked to avoid sudo in main all the time
-        SUDO_CMDS="apt dnf docker"
+        SUDO_CMDS="apt snap dnf docker"
         for cmd in $SUDO_CMDS; do
-            command -v $cmd > /dev/null && sudo -E bash "${cmd}.sh" "$what_to_do" || :
+            command -v $cmd > /dev/null && sudo -E bash "${SCRIPT_DIR}${cmd}.sh" "$what_to_do" || :
         done
     else
         for t in "${targets[@]}"
@@ -38,23 +42,23 @@ function _do_it_for_all() {
                 # COMMENTED FOR WARNING
                 # 1) _do_it_for_all "$what_to_do"
                 #    ;;
-                2) bash "bash-zsh.sh" "$what_to_do"
+                2) bash "${SCRIPT_DIR}bash-zsh.sh" "$what_to_do"
                    ;;
-                3) sudo -E bash "environment.sh" "$what_to_do"
+                3) sudo -E bash "${SCRIPT_DIR}environment.sh" "$what_to_do"
                    ;;
-                4) sudo -E bash "apt.sh" "$what_to_do"
+                4) sudo -E bash "${SCRIPT_DIR}apt.sh" "$what_to_do"
                    # sudo -E bash "snap.sh" "$what_to_do"
-                   sudo -E bash "dnf.sh" "$what_to_do"
+                   sudo -E bash "${SCRIPT_DIR}dnf.sh" "$what_to_do"
                    ;;
-                5) bash "gsettings.sh" "$what_to_do"
+                5) bash "${SCRIPT_DIR}gsettings.sh" "$what_to_do"
                    ;;
-                6) bash "npm.sh" "$what_to_do"
+                6) bash "${SCRIPT_DIR}npm.sh" "$what_to_do"
                    ;;
-                7) bash "dropbox.sh" "$what_to_do"
+                7) bash "${SCRIPT_DIR}dropbox.sh" "$what_to_do"
                    ;;
-                8) bash "git.sh" "$what_to_do"
+                8) bash "${SCRIPT_DIR}git.sh" "$what_to_do"
                    ;;
-                9) sudo -E bash "docker.sh" "$what_to_do"
+                9) sudo -E bash "${SCRIPT_DIR}docker.sh" "$what_to_do"
                    ;;
                 *) ;;
             esac
@@ -141,7 +145,7 @@ function prompt_for_proxy_targets() {
     echo "|${bold}${red} 1 ${normal}| All of them ... Don't bother me"
     echo "|${bold}${red} 2 ${normal}| Terminal / bash / zsh (current user) "
     echo "|${bold}${red} 3 ${normal}| /etc/environment"
-    echo "|${bold}${red} 4 ${normal}| apt+snap/dnf (Package manager)"
+    echo "|${bold}${red} 4 ${normal}| Package manager (apt+snap/dnf)"
     echo "|${bold}${red} 5 ${normal}| Desktop settings (GNOME/Ubuntu)"
     echo "|${bold}${red} 6 ${normal}| npm & yarn"
     echo "|${bold}${red} 7 ${normal}| Dropbox"

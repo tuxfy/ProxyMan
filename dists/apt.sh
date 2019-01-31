@@ -15,9 +15,9 @@ list_proxy() {
     # inefficient way as the file is read twice.. think of some better way
     echo
     echo "${bold}APT proxy settings : ${normal}"
-    lines="$(cat $CONF_FILE | grep proxy -i | wc -l)"
+    lines="$(cat $CONF_FILE | grep Proxy -i | wc -l)"
     if [ "$lines" -gt 0 ]; then
-        cat "$CONF_FILE" | grep proxy -i | wc -l
+        cat "$CONF_FILE" | grep Proxy -i | wc -l
     else
         echo "${red}None${normal}"
     fi
