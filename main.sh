@@ -47,7 +47,7 @@ function _do_it_for_all() {
                 3) sudo -E bash "${SCRIPT_DIR}environment.sh" "$what_to_do"
                    ;;
                 4) sudo -E bash "${SCRIPT_DIR}apt.sh" "$what_to_do"
-                   # sudo -E bash "snap.sh" "$what_to_do"
+                   sudo -E bash "${SCRIPT_DIR}snap.sh" "$what_to_do"
                    sudo -E bash "${SCRIPT_DIR}dnf.sh" "$what_to_do"
                    ;;
                 5) bash "${SCRIPT_DIR}gsettings.sh" "$what_to_do"

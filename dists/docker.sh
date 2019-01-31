@@ -15,6 +15,7 @@ reload_docker_service() {
 
 list_proxy() {
     # inefficient way as the file is read twice.. think of some better way
+    echo
     echo -e "${bold}docker proxy settings: ${normal}"
     if [ ! -e "$CONF_FILE" ]; then
         echo -e "${red}None${normal}"
@@ -41,8 +42,8 @@ unset_proxy() {
 set_proxy() {
     unset_proxy
     mkdir -p /etc/systemd/system/docker.service.d
-    if [[ ! -e "$CONF_FILE" ]]; then
-        echo -n "" > $CONF_FILE
+    if [ ! -e "$CONF_FILE" ]; then
+        touch "$CONF_FILE"
         echo "[Service]" >> $CONF_FILE
     fi
 
@@ -51,14 +52,18 @@ set_proxy() {
         stmt="${username}:${password}@"
     fi
 
-    if [ "$USE_HTTP_PROXY_FOR_HTTPS" = "true" ]; then
-        echo 'Environment="HTTP_PROXY=http://'${stmt}${http_host}:${http_port}'/" "HTTPS_PROXY=http://'${stmt}${https_host}:${https_port}'/" "NO_PROXY='${no_proxy}'"'\
-             >> $CONF_FILE
-    else
-        echo 'Environment="HTTP_PROXY=http://'${stmt}${http_host}:${http_port}'/" "HTTPS_PROXY=https://'${stmt}${https_host}:${https_port}'/" "NO_PROXY='${no_proxy}'"'\
-             >> $CONF_FILE
-    fi
 
+    echo 'Environment="HTTP_PROXY=http://'${stmt}${http_host}:${http_port}'/"'\
+        >> $CONF_FILE
+    if [ "$USE_HTTP_PROXY_FOR_HTTPS" = "true" ]; then
+        echo 'Environment="HTTPS_PROXY=http://'${stmt}${https_host}:${https_port}'/"'\
+            >> $CONF_FILE
+    else
+        echo 'Environment="HTTPS_PROXY=https://'${stmt}${https_host}:${https_port}'/"'\
+            >> $CONF_FILE
+    fi
+    echo 'Environment="NO_PROXY='${no_proxy}'"'\
+        >> $CONF_FILE
 
     return
 }
