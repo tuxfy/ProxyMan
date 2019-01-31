@@ -48,10 +48,17 @@ set_proxy() {
          >> "$CONF_FILE"
     echo "HTTP_PROXY=\"http://${stmt}${http_host}:${http_port}\"" \
          >> "$CONF_FILE"
-    echo "https_proxy=\"http://${stmt}${http_host}:${http_port}\"" \
-         >> "$CONF_FILE"
-    echo "HTTPS_PROXY=\"http://${stmt}${http_host}:${http_port}\"" \
-         >> "$CONF_FILE"
+    if [ "$USE_HTTP_PROXY_FOR_HTTPS" = "true" ]; then
+        echo "https_proxy=\"http://${stmt}${http_host}:${http_port}\"" \
+             >> "$CONF_FILE"
+        echo "HTTPS_PROXY=\"http://${stmt}${http_host}:${http_port}\"" \
+             >> "$CONF_FILE"
+    else
+        echo "https_proxy=\"https://${stmt}${http_host}:${http_port}\"" \
+             >> "$CONF_FILE"
+        echo "HTTPS_PROXY=\"https://${stmt}${http_host}:${http_port}\"" \
+             >> "$CONF_FILE"
+    fi
     echo "ftp_proxy=\"http://${stmt}${http_host}:${http_port}\"" \
         >> "$CONF_FILE"
     echo "FTP_PROXY=\"http://${stmt}${http_host}:${http_port}\"" \

@@ -144,7 +144,7 @@ function prompt_for_proxy_targets() {
 
     echo "|${bold}${red} 1 ${normal}| All of them ... Don't bother me"
     echo "|${bold}${red} 2 ${normal}| Terminal / bash / zsh (current user) "
-    echo "|${bold}${red} 3 ${normal}| /etc/environment"
+    echo "|${bold}${red} 3 ${normal}| /etc/environment (isn't required, reboot necessary)"
     echo "|${bold}${red} 4 ${normal}| Package manager (apt+snap/dnf)"
     echo "|${bold}${red} 5 ${normal}| Desktop settings (GNOME/Ubuntu)"
     echo "|${bold}${red} 6 ${normal}| npm & yarn"
