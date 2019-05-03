@@ -11,15 +11,32 @@ fix_new_line() {
     fi
 }
 
+# list_proxy() {
+#     # inefficient way as the file is read twice.. think of some better way
+#     echo
+#     echo "${bold}APT proxy settings : ${normal}"
+#     lines="$(cat $CONF_FILE | grep Proxy -i | wc -l)"
+#     if [ "$lines" -gt 0 ]; then
+#         cat "$CONF_FILE" | grep Proxy -i | wc -l
+#     else
+#         echo "${red}None${normal}"
+#     fi
+# }
+
 list_proxy() {
     # inefficient way as the file is read twice.. think of some better way
     echo
-    echo "${bold}APT proxy settings : ${normal}"
-    lines="$(cat $CONF_FILE | grep Proxy -i | wc -l)"
-    if [ "$lines" -gt 0 ]; then
-        cat "$CONF_FILE" | grep Proxy -i | wc -l
+    echo -e "${bold}apt proxy settings: ${normal}"
+    if [ ! -e "$CONF_FILE" ]; then
+        echo -e "${red}None${normal}"
+        return
     else
-        echo "${red}None${normal}"
+        lines="$(cat $CONF_FILE | grep proxy -i | wc -l)"
+        if [ "$lines" -gt 0 ]; then
+            cat $CONF_FILE | grep proxy -i | sed -e "s/Acquire\:\://g" -e "s/\_/\ /g"
+        else
+            echo -e "${red}None${normal}"
+        fi
     fi
 }
 
