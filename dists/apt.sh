@@ -44,8 +44,8 @@ unset_proxy() {
     if [ ! -e "$CONF_FILE" ]; then
         return
     fi
-    if [ "$(cat $CONF_FILE | grep proxy -i | wc -l)" -gt 0 ]; then
-        sed -E "/^Acquire::(.)*::Proxy/d" $CONF_FILE -i
+    if [ "$(cat $CONF_FILE | grep Acquire -i | wc -l)" -gt 0 ]; then
+        sed -E "/^Acquire::(.)*/d" $CONF_FILE -i
     fi
 }
 
@@ -72,6 +72,11 @@ set_proxy() {
     fi
     echo "Acquire::Ftp::Proxy \"ftp://${stmt}${ftp_host}:${ftp_port}\";" \
          >> "$CONF_FILE"
+
+    echo "Acquire::http::No-Cache true;" \
+        >> "$CONF_FILE"
+    echo "Acquire::http::Pipeline-Depth 0;" \
+       >> "$CONF_FILE"
 }
 
 
