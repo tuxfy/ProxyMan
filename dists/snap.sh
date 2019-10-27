@@ -17,6 +17,12 @@ list_proxy() {
     # inefficient way as the file is read twice.. think of some better way
     echo
     echo -e "${bold}snap proxy settings: ${normal}"
+
+    echo -e "snap system proxy.http(s):"
+    echo "$(sudo snap get core proxy)"
+    echo -e ""
+    echo -e "$CONF_FILE"
+
     if [ ! -e "$CONF_FILE" ]; then
         echo -e "${red}None${normal}"
         return
@@ -31,6 +37,9 @@ list_proxy() {
 }
 
 unset_proxy() {
+    snap unset system proxy.http
+    snap unset system proxy.https
+
     if [ ! -e "$CONF_FILE" ]; then
         return
     fi
@@ -41,16 +50,25 @@ unset_proxy() {
 
 set_proxy() {
     unset_proxy
-    mkdir -p /etc/systemd/system/snap.service.d
-    if [ ! -e "$CONF_FILE" ]; then
-        touch "$CONF_FILE"
-        echo "[Service]" >> $CONF_FILE
-    fi
 
     local stmt=""
     if [ "$use_auth" = "y" ]; then
         stmt="${username}:${password}@"
     fi
+
+    snap set system proxy.http="http://${stmt}${http_host}:${http_port}"
+    if [ "$USE_HTTP_PROXY_FOR_HTTPS" = "true" ]; then
+        snap set system proxy.https="http://${stmt}${http_host}:${http_port}"
+    else
+        snap set system proxy.https="https://${stmt}${https_host}:${http_port}"
+    fi 
+
+    mkdir -p /etc/systemd/system/snap.service.d
+    if [ ! -e "$CONF_FILE" ]; then
+        touch "$CONF_FILE"
+        echo "[Service]" >> $CONF_FILE
+    fi
+    
 
     echo 'Environment="HTTP_PROXY=http://'${stmt}${http_host}:${http_port}'/"'\
         >> $CONF_FILE
@@ -63,7 +81,6 @@ set_proxy() {
     fi
     echo 'Environment="NO_PROXY='${no_proxy}'"'\
         >> $CONF_FILE
-
 
     return
 }
