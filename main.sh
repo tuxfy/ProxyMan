@@ -28,6 +28,8 @@ function _do_it_for_all() {
         bash "${SCRIPT_DIR}npm.sh" "$what_to_do"
         bash "${SCRIPT_DIR}dropbox.sh" "$what_to_do"
         bash "${SCRIPT_DIR}git.sh" "$what_to_do"
+        bash "${SCRIPT_DIR}nextcloud.sh" "$what_to_do"
+        bash "${SCRIPT_DIR}vscode.sh" "$what_to_do"
 
         # isn't required, but still checked to avoid sudo in main all the time
         SUDO_CMDS="apt snap dnf docker"
@@ -57,8 +59,10 @@ function _do_it_for_all() {
                 7) bash "${SCRIPT_DIR}dropbox.sh" "$what_to_do"
                    ;;
                 8) bash "${SCRIPT_DIR}git.sh" "$what_to_do"
+                   sudo -E bash "${SCRIPT_DIR}docker.sh" "$what_to_do"
                    ;;
-                9) sudo -E bash "${SCRIPT_DIR}docker.sh" "$what_to_do"
+                9) bash "${SCRIPT_DIR}nextcloud.sh" "$what_to_do"
+                   bash "${SCRIPT_DIR}vscode.sh" "$what_to_do"
                    ;;
                 *) ;;
             esac
@@ -149,8 +153,8 @@ function prompt_for_proxy_targets() {
     echo "|${bold}${red} 5 ${normal}| Desktop settings (GNOME/Ubuntu)"
     echo "|${bold}${red} 6 ${normal}| npm & yarn"
     echo "|${bold}${red} 7 ${normal}| Dropbox"
-    echo "|${bold}${red} 8 ${normal}| Git"
-    echo "|${bold}${red} 9 ${normal}| Docker"
+    echo "|${bold}${red} 8 ${normal}| Git & Docker"
+    echo "|${bold}${red} 9 ${normal}| Nextcloud & vscode"
     echo
     echo "Separate multiple choices with space"
     echo -ne "\e[5m ? \e[0m" ; read targets
